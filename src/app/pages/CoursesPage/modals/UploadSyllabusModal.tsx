@@ -67,8 +67,10 @@ export function UploadSyllabusModal() {
       });
 
       if (response.error) {
-        error.syllabusFile = true;
-        setError(error);
+        setError({
+          ...error,
+          syllabusFile: true
+        });
       } else if (response.result) {
         const newRows = [...rows];
         newRows[courseSectionIndex] = response.result;
