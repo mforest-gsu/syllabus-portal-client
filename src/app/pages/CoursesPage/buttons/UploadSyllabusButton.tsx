@@ -8,8 +8,7 @@ export function UploadSyllabusButton() {
   const rows = useAppSelector((state) => state.coursesPage.courseSections.rows);
   const rowSelectionModel = useAppSelector((state) => state.coursesPage.courseSections.rowSelectionModel);
   const courseSection: CourseSection | null = rows.find((value) => value.id === rowSelectionModel[0]) ?? null;
-  const disabled =
-    courseSection === null || courseSection.instructorId === null || courseSection.instructorId === "STAFF";
+  const disabled = courseSection === null;
   const onClick = () => dispatch(coursesPageStore.openModal({ name: "uploadSyllabusModal", value: { open: true } }));
 
   return (
