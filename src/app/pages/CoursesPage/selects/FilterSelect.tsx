@@ -1,4 +1,3 @@
-import { Navigate } from "@tanstack/react-router";
 import SelectFormControl from "app/components/SelectFormControl";
 import useSelect from "./useFilterSelect";
 import { useEffect } from "react";
@@ -12,7 +11,8 @@ export function FilterSelect(props: { name: "termCode" | "collegeCode" | "depart
   }, [defaultValue, items, setDefaultValue]);
 
   if (error === "notLoggedIn") {
-    return <Navigate to="/login" />;
+    window.location.replace(`${import.meta.env.VITE_API_URL}/auth/login`);
+    return null;
   } else if (error !== null) {
     throw new Error(error);
   }

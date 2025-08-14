@@ -1,6 +1,5 @@
 import { DataGridPremium } from "@mui/x-data-grid-premium";
 import debounce from "@mui/utils/debounce";
-import { Navigate } from "@tanstack/react-router";
 import { coursesPageStore } from "app/store";
 import type { GridFilterModel } from "app/types";
 
@@ -14,7 +13,8 @@ export function CourseSectionsGrid() {
     useCourseSections();
 
   if (status === "notLoggedIn") {
-    return <Navigate to="/login" />;
+    window.location.replace(`${import.meta.env.VITE_API_URL}/auth/login`);
+    return null;
   } else if (status === "error") {
     throw new Error(status);
   }
