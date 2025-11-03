@@ -46,6 +46,10 @@ export interface GetCourseSectionsParams extends ApiParams {
   syllabusUploadedBy?: string;
   syllabusUploadedOnStart?: string;
   syllabusUploadedOnEnd?: string;
+  cvStatus?: string;
+  cvUploadedBy?: string;
+  cvUploadedOnStart?: string;
+  cvUploadedOnEnd?: string;
   offset?: number;
   limit?: number;
   orderBy?: string;
@@ -68,3 +72,15 @@ export interface UploadSyllabusParams extends ApiParams {
   syllabus: File;
 }
 export type UploadSyllabusResult = ApiResult<CourseSection>;
+
+
+export interface RemoveCvParams extends ApiParams {
+  id: string;
+}
+export type RemoveCvResult = ApiResult<CourseSection>;
+
+export interface UploadCvParams extends ApiParams {
+  id: string;
+  cv: File;
+}
+export type UploadCvResult = ApiResult<CourseSection>;

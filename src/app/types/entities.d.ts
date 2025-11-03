@@ -28,6 +28,11 @@ export type CourseSection = {
   syllabusUrl: string | null;
   syllabusUploadedBy: string | null;
   syllabusUploadedOn: Date | null;
+  cvStatus: string;
+  cvKey: string | null;
+  cvUrl: string | null;
+  cvUploadedBy: string | null;
+  cvUploadedOn: Date | null;
 };
 
 export type FilterItem = {

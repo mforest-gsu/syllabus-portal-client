@@ -3,6 +3,7 @@ export type {
   GetColumnForNewFilterArgs,
   GridColDef,
   GridColumnVisibilityModel,
+  GridColumnGroupingModel,
   GridFilterModel,
   GridPaginationModel,
   GridRowId,

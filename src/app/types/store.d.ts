@@ -27,14 +27,14 @@ export type DataGridState = {
   sortModel: Writeable<GridSortModel>;
 };
 
-export type CoursesPageFilters = "termCode" | "collegeCode" | "departmentCode" | "syllabusStatus";
+export type CoursesPageFilters = "termCode" | "collegeCode" | "departmentCode" | "syllabusStatus" | "cvStatus";
 
 export type CoursesPageSetFilterPayload = PayloadAction<{
   name: CoursesPageFilters;
   value: Partial<SelectFormControlState>;
 }>;
 
-export type CoursesPageModals = "uploadSyllabusModal";
+export type CoursesPageModals = "uploadSyllabusModal" | "uploadCvModal";
 
 export type CoursesPageOpenModalPayload = PayloadAction<{
   name: CoursesPageModals;
