@@ -12,6 +12,7 @@ export function DownloadSyllabusButton(props: { style?: CSSProperties }) {
 
   return (
     <Button
+      size="small"
       variant="outlined"
       color="default"
       startIcon={<VisibilityIcon />}

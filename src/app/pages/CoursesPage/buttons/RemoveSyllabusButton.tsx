@@ -17,6 +17,7 @@ export function RemoveSyllabusButton() {
   return (
     <>
       <Button
+        size="small"
         variant="outlined"
         color="default"
         startIcon={loading ? <PendingOutlinedIcon /> : <ClearIcon color={!disabled ? "error" : undefined} />}

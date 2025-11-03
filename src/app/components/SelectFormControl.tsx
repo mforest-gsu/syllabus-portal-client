@@ -32,7 +32,7 @@ export default function SelectFormControl(props: SelectFormControlProps) {
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth size="small">
       <SelectFormControlLabel {...myProps} />
       <SelectFormControlSelect {...myProps} />
     </FormControl>
