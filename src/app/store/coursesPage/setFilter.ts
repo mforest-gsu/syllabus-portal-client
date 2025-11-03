@@ -41,5 +41,13 @@ export default function setFilter(state: CoursesPageState, action: CoursesPageSe
         state.filters.syllabusStatus.items = value.items;
       }
       break;
+    case "cvStatus":
+      if (value.defaultValue !== undefined) {
+        state.filters.cvStatus.defaultValue = value.defaultValue;
+      }
+      if (value.items !== undefined) {
+        state.filters.cvStatus.items = value.items;
+      }
+      break;
   }
 }

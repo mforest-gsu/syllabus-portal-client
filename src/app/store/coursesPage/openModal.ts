@@ -8,5 +8,10 @@ export default function setButton(state: CoursesPageState, action: CoursesPageOp
         state.modals.uploadSyllabusModal.open = value.open;
       }
       break;
+    case "uploadCvModal":
+      if (value.open !== undefined) {
+        state.modals.uploadCvModal.open = value.open;
+      }
+      break;
   }
 }

@@ -27,9 +27,25 @@ const coursesPageState: CoursesPageState = {
       ],
       defaultValue: "",
     },
+    cvStatus: {
+      items: [
+        {
+          value: "Pending",
+          label: "Pending",
+        },
+        {
+          value: "Complete",
+          label: "Complete",
+        },
+      ],
+      defaultValue: "",
+    },
   },
   modals: {
     uploadSyllabusModal: {
+      open: false,
+    },
+    uploadCvModal: {
       open: false,
     },
   },
@@ -39,7 +55,7 @@ const coursesPageState: CoursesPageState = {
     rows: [],
     filterModel: { items: [] },
     paginationModel: {
-      pageSize: 25,
+      pageSize: 5,
       page: 0,
     },
     rowSelectionModel: [],
