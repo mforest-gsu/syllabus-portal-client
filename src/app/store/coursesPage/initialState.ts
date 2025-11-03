@@ -14,6 +14,19 @@ const coursesPageState: CoursesPageState = {
       items: [],
       defaultValue: "",
     },
+    syllabusIsRequired: {
+      items: [
+        {
+          value: "true",
+          label: "Yes",
+        },
+        {
+          value: "false",
+          label: "No",
+        },
+      ],
+      defaultValue: "",
+    },
     syllabusStatus: {
       items: [
         {
@@ -55,7 +68,7 @@ const coursesPageState: CoursesPageState = {
     rows: [],
     filterModel: { items: [] },
     paginationModel: {
-      pageSize: 5,
+      pageSize: 10,
       page: 0,
     },
     rowSelectionModel: [],

@@ -23,6 +23,7 @@ export type CourseSection = {
   instructorFirstName: string | null;
   instructorLastName: string | null;
   instructorEmail: string | null;
+  syllabusIsRequired: boolean;
   syllabusStatus: string;
   syllabusKey: string | null;
   syllabusUrl: string | null;

@@ -33,6 +33,14 @@ export default function setFilter(state: CoursesPageState, action: CoursesPageSe
         state.filters.departmentCode.items = value.items;
       }
       break;
+    case "syllabusIsRequired":
+      if (value.defaultValue !== undefined) {
+        state.filters.syllabusIsRequired.defaultValue = value.defaultValue;
+      }
+      if (value.items !== undefined) {
+        state.filters.syllabusIsRequired.items = value.items;
+      }
+      break;
     case "syllabusStatus":
       if (value.defaultValue !== undefined) {
         state.filters.syllabusStatus.defaultValue = value.defaultValue;

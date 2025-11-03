@@ -27,7 +27,13 @@ export type DataGridState = {
   sortModel: Writeable<GridSortModel>;
 };
 
-export type CoursesPageFilters = "termCode" | "collegeCode" | "departmentCode" | "syllabusStatus" | "cvStatus";
+export type CoursesPageFilters =
+  | "termCode"
+  | "collegeCode"
+  | "departmentCode"
+  | "syllabusIsRequired"
+  | "syllabusStatus"
+  | "cvStatus";
 
 export type CoursesPageSetFilterPayload = PayloadAction<{
   name: CoursesPageFilters;

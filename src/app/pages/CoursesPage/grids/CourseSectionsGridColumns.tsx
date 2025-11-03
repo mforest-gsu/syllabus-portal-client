@@ -38,16 +38,21 @@ export const columnGroupingModel: GridColumnGroupingModel = [
     children: [{ field: "instructorName" }, { field: "instructorEmail" }],
   },
   {
+    groupId: "syllabusFields",
+    headerName: "Syllabus",
+    headerAlign: "center",
+    children: [
+      { field: "syllabusIsRequired" },
+      { field: "syllabusStatus" },
+      { field: "syllabusUploadedOn" },
+      { field: "syllabusUploadedBy" },
+    ],
+  },
+  {
     groupId: "cvFields",
     headerName: "CV",
     headerAlign: "center",
     children: [{ field: "cvStatus" }, { field: "cvUploadedOn" }, { field: "cvUploadedBy" }],
-  },
-  {
-    groupId: "syllabusFields",
-    headerName: "Syllabus",
-    headerAlign: "center",
-    children: [{ field: "syllabusStatus" }, { field: "syllabusUploadedOn" }, { field: "syllabusUploadedBy" }],
   },
 ];
 
@@ -139,6 +144,17 @@ export const columns: GridColDef<CourseSection>[] = [
     aggregable: false,
     groupable: false,
     filterOperators: stringContainsOperator,
+  },
+  {
+    field: "syllabusIsRequired",
+    headerName: "Required",
+    width: 90,
+    aggregable: false,
+    filterable: false,
+    groupable: false,
+    valueFormatter: (value, row) => {
+      return value === "1" || row.syllabusIsRequired ? "Yes" : "No";
+    },
   },
   {
     field: "syllabusStatus",

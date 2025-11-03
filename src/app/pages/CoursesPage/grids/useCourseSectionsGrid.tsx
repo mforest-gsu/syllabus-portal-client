@@ -6,7 +6,7 @@ import type { CourseSection, CoursesPageSetCourseSections, GridRowSelectionModel
 export default function useCourseSections() {
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
-  const { termCode, collegeCode, departmentCode, syllabusStatus, cvStatus } = useAppSelector(
+  const { termCode, collegeCode, departmentCode, syllabusIsRequired, syllabusStatus, cvStatus } = useAppSelector(
     (state) => state.coursesPage.filters
   );
   const { status, rowCount, rows, filterModel, paginationModel, rowSelectionModel, sortModel } = useAppSelector(
@@ -50,6 +50,8 @@ export default function useCourseSections() {
             });
             return f;
           })(),
+          syllabusIsRequired:
+            syllabusIsRequired.defaultValue !== "" ? syllabusIsRequired.defaultValue === "true" : undefined,
           syllabusStatus: syllabusStatus.defaultValue !== "" ? syllabusStatus.defaultValue : undefined,
           cvStatus: cvStatus.defaultValue !== "" ? cvStatus.defaultValue : undefined,
           offset: paginationModel.page * paginationModel.pageSize,
@@ -84,6 +86,7 @@ export default function useCourseSections() {
     termCode,
     collegeCode,
     departmentCode,
+    syllabusIsRequired,
     syllabusStatus,
     cvStatus,
     filterModel,

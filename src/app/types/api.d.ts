@@ -42,6 +42,7 @@ export interface GetCourseSectionsParams extends ApiParams {
   instructorFirstName?: string;
   instructorLastName?: string;
   instructorEmail?: string;
+  syllabusIsRequired?: boolean;
   syllabusStatus?: string;
   syllabusUploadedBy?: string;
   syllabusUploadedOnStart?: string;
@@ -72,7 +73,6 @@ export interface UploadSyllabusParams extends ApiParams {
   syllabus: File;
 }
 export type UploadSyllabusResult = ApiResult<CourseSection>;
-
 
 export interface RemoveCvParams extends ApiParams {
   id: string;
