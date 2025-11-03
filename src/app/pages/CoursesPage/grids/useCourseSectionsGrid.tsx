@@ -6,7 +6,7 @@ import type { CourseSection, CoursesPageSetCourseSections, GridRowSelectionModel
 export default function useCourseSections() {
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
-  const { termCode, collegeCode, departmentCode, syllabusStatus } = useAppSelector(
+  const { termCode, collegeCode, departmentCode, syllabusStatus, cvStatus } = useAppSelector(
     (state) => state.coursesPage.filters
   );
   const { status, rowCount, rows, filterModel, paginationModel, rowSelectionModel, sortModel } = useAppSelector(
@@ -51,6 +51,7 @@ export default function useCourseSections() {
             return f;
           })(),
           syllabusStatus: syllabusStatus.defaultValue !== "" ? syllabusStatus.defaultValue : undefined,
+          cvStatus: cvStatus.defaultValue !== "" ? cvStatus.defaultValue : undefined,
           offset: paginationModel.page * paginationModel.pageSize,
           limit: paginationModel.pageSize,
           orderBy: buildOrderByString(sortModel) ?? undefined,
@@ -78,7 +79,18 @@ export default function useCourseSections() {
         })
       );
     }
-  }, [auth, termCode, collegeCode, departmentCode, syllabusStatus, filterModel, paginationModel, sortModel, dispatch]);
+  }, [
+    auth,
+    termCode,
+    collegeCode,
+    departmentCode,
+    syllabusStatus,
+    cvStatus,
+    filterModel,
+    paginationModel,
+    sortModel,
+    dispatch,
+  ]);
 
   return {
     status,
@@ -87,6 +99,7 @@ export default function useCourseSections() {
       (value): CourseSection => ({
         ...value,
         syllabusUploadedOn: value.syllabusUploadedOn ? new Date(value.syllabusUploadedOn.toString()) : null,
+        cvUploadedOn: value.cvUploadedOn ? new Date(value.cvUploadedOn.toString()) : null,
       })
     ),
     filterModel,
@@ -106,7 +119,7 @@ function buildOrderByString(sort: GridSortModel): string | null {
               return [`subjectCode ${value.sort}`, `courseNumber ${value.sort}`, `courseSequence ${value.sort}`].join(
                 ","
               );
-            case "instructor":
+            case "instructorName":
               return [
                 `instructorLastName ${value.sort}`,
                 `instructorFirstName ${value.sort}`,

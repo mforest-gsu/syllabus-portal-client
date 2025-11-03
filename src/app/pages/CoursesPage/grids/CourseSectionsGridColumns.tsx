@@ -1,5 +1,5 @@
 import { getGridStringOperators, getGridDateOperators } from "@mui/x-data-grid-premium";
-import type { CourseSection, GridColDef, GridColumnVisibilityModel } from "app/types";
+import type { CourseSection, GridColDef, GridColumnGroupingModel, GridColumnVisibilityModel } from "app/types";
 
 const stringEqualsOperator = getGridStringOperators().filter((o) => o.value === "equals");
 const stringContainsOperator = getGridStringOperators().filter((o) => o.value === "contains");
@@ -16,10 +16,40 @@ export const columnVisibilityModel: GridColumnVisibilityModel = {
   instructorId: false,
   instructorFirstName: false,
   instructorLastName: false,
-  instructorEmail: false,
+  syllabusUploadedBy: false,
   syllabusUploadedOnStart: false,
   syllabusUploadedOnEnd: false,
+  cvUploadedBy: false,
+  cvUploadedOnStart: false,
+  cvUploadedOnEnd: false,
 };
+
+export const columnGroupingModel: GridColumnGroupingModel = [
+  {
+    groupId: "courseFields",
+    headerName: "Course",
+    headerAlign: "center",
+    children: [{ field: "course" }, { field: "crn" }, { field: "courseTitle" }],
+  },
+  {
+    groupId: "instructorFields",
+    headerName: "Instructor",
+    headerAlign: "center",
+    children: [{ field: "instructorName" }, { field: "instructorEmail" }],
+  },
+  {
+    groupId: "cvFields",
+    headerName: "CV",
+    headerAlign: "center",
+    children: [{ field: "cvStatus" }, { field: "cvUploadedOn" }, { field: "cvUploadedBy" }],
+  },
+  {
+    groupId: "syllabusFields",
+    headerName: "Syllabus",
+    headerAlign: "center",
+    children: [{ field: "syllabusStatus" }, { field: "syllabusUploadedOn" }, { field: "syllabusUploadedBy" }],
+  },
+];
 
 export const columns: GridColDef<CourseSection>[] = [
   {
@@ -28,7 +58,7 @@ export const columns: GridColDef<CourseSection>[] = [
     aggregable: false,
     filterable: false,
     groupable: false,
-    width: 150,
+    width: 115,
     valueFormatter: (value, row) => {
       return typeof value === "string" ? value : `${row.subjectCode} ${row.courseNumber} ${row.courseSequence}`;
     },
@@ -40,6 +70,15 @@ export const columns: GridColDef<CourseSection>[] = [
     groupable: false,
     width: 80,
     filterOperators: stringEqualsOperator,
+  },
+  {
+    field: "courseTitle",
+    headerName: "Title",
+    minWidth: 200,
+    flex: 1,
+    aggregable: false,
+    groupable: false,
+    filterOperators: stringContainsOperator,
   },
   {
     field: "subjectCode",
@@ -63,16 +102,9 @@ export const columns: GridColDef<CourseSection>[] = [
     filterOperators: stringStartsWithOperator,
   },
   {
-    field: "courseTitle",
-    headerName: "Title",
-    aggregable: false,
-    groupable: false,
-    filterOperators: stringContainsOperator,
-    flex: 0.5,
-  },
-  {
-    field: "instructor",
-    headerName: "Instructor",
+    field: "instructorName",
+    headerName: "Name",
+    minWidth: 125,
     flex: 0.5,
     aggregable: false,
     filterable: false,
@@ -81,12 +113,18 @@ export const columns: GridColDef<CourseSection>[] = [
       let label: string = "";
       if (row.instructorFirstName && row.instructorLastName) {
         label = `${row.instructorFirstName} ${row.instructorLastName}`;
-        if (row.instructorEmail) {
-          label += ` <${row.instructorEmail}>`;
-        }
       }
       return typeof value === "string" ? value : label;
     },
+  },
+  {
+    field: "instructorEmail",
+    headerName: "Email",
+    minWidth: 150,
+    flex: 1,
+    aggregable: false,
+    groupable: false,
+    filterOperators: stringContainsOperator,
   },
   {
     field: "instructorFirstName",
@@ -103,19 +141,29 @@ export const columns: GridColDef<CourseSection>[] = [
     filterOperators: stringContainsOperator,
   },
   {
-    field: "instructorEmail",
-    headerName: "Instructor Email",
-    aggregable: false,
-    groupable: false,
-    filterOperators: stringContainsOperator,
-  },
-  {
     field: "syllabusStatus",
     headerName: "Status",
     width: 90,
     aggregable: false,
     filterable: false,
     groupable: false,
+  },
+  {
+    field: "syllabusUploadedOn",
+    type: "date",
+    headerName: "Uploaded On",
+    aggregable: false,
+    filterable: false,
+    groupable: false,
+    width: 131,
+  },
+  {
+    field: "syllabusUploadedBy",
+    headerName: "Updated By",
+    aggregable: false,
+    groupable: false,
+    filterOperators: stringStartsWithOperator,
+    width: 200,
   },
   {
     field: "syllabusUploadedOnStart",
@@ -130,20 +178,40 @@ export const columns: GridColDef<CourseSection>[] = [
     filterOperators: getGridDateOperators().filter((o) => o.value === "onOrBefore"),
   },
   {
-    field: "syllabusUploadedOn",
+    field: "cvStatus",
+    headerName: "Status",
+    width: 90,
+    aggregable: false,
+    filterable: false,
+    groupable: false,
+  },
+  {
+    field: "cvUploadedOn",
     type: "date",
     headerName: "Uploaded On",
     aggregable: false,
     filterable: false,
     groupable: false,
-    width: 140,
+    width: 131,
   },
   {
-    field: "syllabusUploadedBy",
+    field: "cvUploadedBy",
     headerName: "Updated By",
     aggregable: false,
     groupable: false,
     filterOperators: stringStartsWithOperator,
     width: 200,
+  },
+  {
+    field: "cvUploadedOnStart",
+    type: "date",
+    headerName: "CV Uploaded On Start",
+    filterOperators: getGridDateOperators().filter((o) => o.value === "onOrAfter"),
+  },
+  {
+    field: "cvUploadedOnEnd",
+    type: "date",
+    headerName: "CV Uploaded On End",
+    filterOperators: getGridDateOperators().filter((o) => o.value === "onOrBefore"),
   },
 ];

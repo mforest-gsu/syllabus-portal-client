@@ -3,7 +3,7 @@ import debounce from "@mui/utils/debounce";
 import { coursesPageStore } from "app/store";
 import type { GridFilterModel } from "app/types";
 
-import { columns, columnVisibilityModel } from "./CourseSectionsGridColumns";
+import { columns, columnVisibilityModel, columnGroupingModel } from "./CourseSectionsGridColumns";
 import { slotProps } from "./CourseSectionsGridSlotProps";
 import CourseSectionsGridToolbar from "./CourseSectionsGridToolbar";
 import useCourseSections from "./useCourseSectionsGrid";
@@ -20,16 +20,20 @@ export function CourseSectionsGrid() {
   }
 
   return (
-    <div style={{ height: 417, width: "100%" }}>
+    <div style={{ minHeight: 398, height: "49.01vh", width: "100%" }}>
       <DataGridPremium
         // columns
         columns={columns}
+        disableColumnPinning={true}
         disableColumnSelector={true}
         columnVisibilityModel={columnVisibilityModel}
+        columnGroupHeaderHeight={36}
+        columnGroupingModel={columnGroupingModel}
         // data
         loading={status === "loading"}
         rowCount={rowCount}
         rows={rows}
+        rowHeight={40}
         // selection
         cellSelection={false}
         disableMultipleRowSelection={true}
@@ -53,7 +57,7 @@ export function CourseSectionsGrid() {
             dispatch(coursesPageStore.setCourseSections({ paginationModel: p }));
           }
         }}
-        pageSizeOptions={[10, 25, 50, 100]}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
         // filtering
         filterMode="server"
         filterModel={filterModel}
