@@ -9,7 +9,11 @@ export function UploadCvButton() {
   const rowSelectionModel = useAppSelector((state) => state.coursesPage.courseSections.rowSelectionModel);
   const courseSection: CourseSection | null = rows.find((value) => value.id === rowSelectionModel[0]) ?? null;
   const disabled = courseSection === null || courseSection.instructorId === "STAFF";
-  const onClick = () => dispatch(coursesPageStore.openModal({ name: "uploadCvModal", value: { open: true } }));
+  const onClick = () => {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+    dispatch(coursesPageStore.openModal({ name: "uploadCvModal", value: { open: true } }));
+  };
 
   return (
     <Button
@@ -22,6 +26,7 @@ export function UploadCvButton() {
       disabled={disabled}
       aria-disabled={disabled}
       sx={{ textTransform: "none" }}
+      className="uploadCvButton"
     >
       Add CV
     </Button>

@@ -26,6 +26,7 @@ export function RemoveSyllabusButton() {
         disabled={disabled || loading}
         aria-disabled={disabled || loading}
         sx={{ textTransform: "none" }}
+        className="removeSyllabusButton"
       >
         {loading ? "Removing..." : "Remove Syllabus"}
       </Button>
@@ -61,7 +62,10 @@ function useRemoveSyllabusButton() {
     if (loading || disabled || courseSection === null) {
       return;
     }
-
+  
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+  
     setLoading(true);
 
     const response = await api.removeSyllabus({

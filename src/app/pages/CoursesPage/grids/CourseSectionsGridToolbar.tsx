@@ -31,13 +31,13 @@ export default function CourseSectionsGridToolbar() {
             />
           }
         />
-        <DownloadCvButton />
-        <DownloadSyllabusButton style={{ marginRight: "auto" }} />
-        <UploadCvButton />
-        <RemoveCvButton  />
-        <div style={{ margin: "0 10px" }}>&nbsp;</div>
+        <DownloadSyllabusButton />
+        <DownloadCvButton style={{ marginRight: "auto" }}  />
         <UploadSyllabusButton />
         <RemoveSyllabusButton />
+        <div style={{ margin: "0 10px" }}>&nbsp;</div>
+        <UploadCvButton />
+        <RemoveCvButton  />
       </Stack>
     </Toolbar>
   );

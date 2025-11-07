@@ -23,6 +23,7 @@ export function DownloadCvButton(props: { style?: CSSProperties }) {
       aria-disabled={disabled}
       style={props.style}
       sx={{ textTransform: "none" }}
+      className="downloadCvButton"
     >
       View CV
     </Button>

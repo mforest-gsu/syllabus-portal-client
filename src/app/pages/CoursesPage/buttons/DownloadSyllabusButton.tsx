@@ -23,6 +23,7 @@ export function DownloadSyllabusButton(props: { style?: CSSProperties }) {
       aria-disabled={disabled}
       style={props.style}
       sx={{ textTransform: "none" }}
+      className="downloadSyllabusButton"
     >
       View Syllabus
     </Button>

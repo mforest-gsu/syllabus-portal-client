@@ -26,6 +26,7 @@ export function RemoveCvButton() {
         disabled={disabled || loading}
         aria-disabled={disabled || loading}
         sx={{ textTransform: "none" }}
+        className="removeCvButton"
       >
         {loading ? "Removing..." : "Remove CV"}
       </Button>
@@ -63,6 +64,9 @@ function useRemoveCvButton() {
       return;
     }
 
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+  
     setLoading(true);
 
     const response = await api.removeCv({

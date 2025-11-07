@@ -10,6 +10,11 @@ import Grid from "@mui/material/Grid";
 import * as api from "app/api";
 import { useAppDispatch, useAppSelector, coursesPageStore } from "app/store";
 import LoadingSpinner from "app/components/LoadingSpinner";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 const defaultError = { subjectCode: false, courseNumber: false, crn: false, syllabusFile: false };
 
@@ -20,6 +25,8 @@ export function UploadSyllabusModal() {
   const rows = useAppSelector((state) => state.coursesPage.courseSections.rows);
   const rowSelectionModel = useAppSelector((state) => state.coursesPage.courseSections.rowSelectionModel);
   const courseSectionIndex: number = rows.findIndex((value) => value.id === rowSelectionModel[0]);
+  const selectedRow = rows[courseSectionIndex];
+  const subjectCodes = [...new Set(rows.map((row) => row.subjectCode))];
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(defaultError);
@@ -51,9 +58,9 @@ export function UploadSyllabusModal() {
       syllabusFile: File;
     };
     const error = {
-      subjectCode: formData.subjectCode.toUpperCase() !== rows[courseSectionIndex].subjectCode.toUpperCase(),
-      courseNumber: formData.courseNumber.toUpperCase() !== rows[courseSectionIndex].courseNumber.toUpperCase(),
-      crn: formData.crn.toUpperCase() !== rows[courseSectionIndex].crn.toUpperCase(),
+      subjectCode: formData.subjectCode.toUpperCase() !== selectedRow.subjectCode.toUpperCase(),
+      courseNumber: formData.courseNumber.toUpperCase() !== selectedRow.courseNumber.toUpperCase(),
+      crn: formData.crn.toUpperCase() !== selectedRow.crn.toUpperCase(),
       syllabusFile: false,
     };
 
@@ -62,14 +69,14 @@ export function UploadSyllabusModal() {
     } else {
       const response = await api.uploadSyllabus({
         auth,
-        id: rows[courseSectionIndex].id,
+        id: selectedRow.id,
         syllabus: formData.syllabusFile,
       });
 
       if (response.error) {
         setError({
           ...error,
-          syllabusFile: true
+          syllabusFile: true,
         });
       } else if (response.result) {
         const newRows = [...rows];
@@ -88,29 +95,71 @@ export function UploadSyllabusModal() {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Upload Syllabus File</DialogTitle>
+      <DialogTitle>
+        Upload Syllabus File
+        {selectedRow?.courseTitle ? (
+          <>
+            <br />
+            {selectedRow.courseTitle}
+          </>
+        ) : null}
+      </DialogTitle>
       <DialogContent sx={{ paddingBottom: 0 }}>
         <DialogContentText>
-          Please verify the subject code, course number, and CRN to upload a syllabus. Syllabus files must be in PDF
-          format and cannot be more than 5 MB in size.
+          Please verify the subject code, course number, and CRN of the selected course to upload a syllabus. Syllabus
+          files must be in PDF format and cannot be more than 5 MB in size.
         </DialogContentText>
         {loading ? <LoadingSpinner /> : null}
         <form onSubmit={handleSubmit}>
           <Grid container spacing={{ xs: 1 }} justifyContent="center">
             <Grid size={{ xs: 12, sm: 4 }}>
-              <TextField
+              {/* <TextField
                 required
                 margin="dense"
                 id="subjectCode"
                 name="subjectCode"
-                label="Subject"
+                label="Subject Code"
                 type="text"
                 fullWidth
                 variant="outlined"
                 disabled={loading}
                 error={error.subjectCode}
-                helperText={error.subjectCode ? "Does not match selected course." : undefined}
-              />
+                helperText={error.subjectCode ? "Does not match selected course." : "e.g., ENGL"}
+              /> */}
+              <FormControl fullWidth margin="dense" variant="outlined">
+                <InputLabel component="div" sx={{ backgroundColor: "#fff" }}>
+                  Subject Code
+                </InputLabel>
+                <Select
+                  required
+                  value={subjectCodes.length === 1 ? subjectCodes[0] : ""}
+                  margin="dense"
+                  name="subjectCode"
+                  label="Subject Code"
+                  type="text"
+                  fullWidth
+                  variant="outlined"
+                  disabled={loading}
+                  error={error.subjectCode}
+                  inputProps={{
+                    id: "subjectCode",
+                    title: "Subject Code",
+                    style: {
+                      display: "none",
+                    },
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {subjectCodes?.map((subjectCode) => (
+                    <MenuItem key={`subjectCode_${subjectCode}`} value={subjectCode}>
+                      {subjectCode}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{error.subjectCode ? "Does not match selected course." : "e.g., ENGL"}</FormHelperText>
+              </FormControl>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
               <TextField
@@ -118,13 +167,13 @@ export function UploadSyllabusModal() {
                 margin="dense"
                 id="courseNumber"
                 name="courseNumber"
-                label="Course"
+                label="Course Number"
                 type="text"
                 fullWidth
                 variant="outlined"
                 disabled={loading}
                 error={error.courseNumber}
-                helperText={error.courseNumber ? "Does not match selected course." : undefined}
+                helperText={error.courseNumber ? "Does not match selected course." : "e.g., 1101"}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -139,7 +188,7 @@ export function UploadSyllabusModal() {
                 variant="outlined"
                 disabled={loading}
                 error={error.crn}
-                helperText={error.crn ? "Does not match selected course." : undefined}
+                helperText={error.crn ? "Does not match selected course." : "e.g., 20100"}
               />
             </Grid>
           </Grid>

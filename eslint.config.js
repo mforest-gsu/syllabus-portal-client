@@ -25,7 +25,7 @@ export default tseslint.config([
       "no-restricted-imports": [
         "error",
         {
-          patterns: [{ regex: "^@mui/(?!x-license)[^/]+$" }],
+          patterns: [{ regex: "^@mui/((material)|(icons-material))$" }],
         },
       ],
     },

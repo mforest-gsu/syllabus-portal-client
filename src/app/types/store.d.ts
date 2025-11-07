@@ -1,5 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AuthToken, FilterItem, GridFilterModel, GridPaginationModel, GridRowId, GridSortModel } from "app/types";
+import type {
+  AuthToken,
+  CourseSection,
+  FilterItem,
+  GridFilterModel,
+  GridPaginationModel,
+  GridRowId,
+  GridSortModel,
+} from "app/types";
 
 export type AuthState = {
   apiUrl: string;

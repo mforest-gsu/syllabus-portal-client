@@ -21,6 +21,7 @@ export function UploadCvModal() {
   const rowSelectionModel = useAppSelector((state) => state.coursesPage.courseSections.rowSelectionModel);
   const sortModel = useAppSelector((state) => state.coursesPage.courseSections.sortModel);
   const courseSectionIndex: number = rows.findIndex((value) => value.id === rowSelectionModel[0]);
+  const selectedRow = rows[courseSectionIndex];
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(defaultError);
@@ -33,6 +34,10 @@ export function UploadCvModal() {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    if (!selectedRow) {
+      return;
+    }
+
     const { submitter } = event.nativeEvent as SubmitEvent;
     if (submitter) {
       submitter.blur();
@@ -51,7 +56,7 @@ export function UploadCvModal() {
     };
     const error = {
       instructorEmail:
-        formData.instructorEmail.toUpperCase() !== rows[courseSectionIndex].instructorEmail.toUpperCase(),
+        formData.instructorEmail.toUpperCase() !== selectedRow.instructorEmail?.toUpperCase(),
       cvFile: false,
     };
 
@@ -60,7 +65,7 @@ export function UploadCvModal() {
     } else {
       const response = await api.uploadCv({
         auth,
-        id: rows[courseSectionIndex].id,
+        id: selectedRow.id,
         cv: formData.cvFile,
       });
 

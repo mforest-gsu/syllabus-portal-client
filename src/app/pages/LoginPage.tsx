@@ -21,6 +21,7 @@ export default function LoginPage() {
               target="_blank"
               rel="noreferrer"
               aria-label="Opens email to help desk in new tab"
+              className="contactGsuHelpDeskLink"
             >
               contact the GSU Help Desk
             </Link>
