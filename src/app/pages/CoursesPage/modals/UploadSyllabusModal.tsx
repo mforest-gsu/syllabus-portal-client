@@ -30,6 +30,7 @@ export function UploadSyllabusModal() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(defaultError);
+  const [subjectCode, setSubjectCode] = useState(subjectCodes.length === 1 ? subjectCodes[0] : "");
 
   const handleClose = () => {
     if (!loading) {
@@ -132,7 +133,8 @@ export function UploadSyllabusModal() {
                 </InputLabel>
                 <Select
                   required
-                  value={subjectCodes.length === 1 ? subjectCodes[0] : ""}
+                  onChange={(event) => setSubjectCode(typeof event.target.value === "string" ? event.target.value : "")}
+                  value={subjectCode}
                   margin="dense"
                   name="subjectCode"
                   label="Subject Code"
