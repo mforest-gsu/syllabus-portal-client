@@ -16,7 +16,20 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-const defaultError = { subjectCode: false, courseNumber: false, crn: false, syllabusFile: false };
+type ModalError = {
+  subjectCode: boolean;
+  courseNumber: boolean;
+  crn: boolean;
+  syllabusFile: boolean;
+  syllabusFileMessage?: string | undefined;
+};
+
+const defaultError = {
+  subjectCode: false,
+  courseNumber: false,
+  crn: false,
+  syllabusFile: false,
+} as ModalError;
 
 export function UploadSyllabusModal() {
   const dispatch = useAppDispatch();
@@ -62,10 +75,11 @@ export function UploadSyllabusModal() {
       subjectCode: formData.subjectCode.toUpperCase() !== selectedRow.subjectCode.toUpperCase(),
       courseNumber: formData.courseNumber.toUpperCase() !== selectedRow.courseNumber.toUpperCase(),
       crn: formData.crn.toUpperCase() !== selectedRow.crn.toUpperCase(),
-      syllabusFile: false,
-    };
+      syllabusFile: formData.syllabusFile.size < 1024 || formData.syllabusFile.size > 2097152,
+    } as ModalError;
 
-    if (error.subjectCode || error.courseNumber || error.crn) {
+    if (error.subjectCode || error.courseNumber || error.crn || error.syllabusFile) {
+      error.syllabusFileMessage = error.syllabusFile ? "File must be less than 2 MB in size" : undefined;
       setError(error);
     } else {
       const response = await api.uploadSyllabus({
@@ -77,7 +91,7 @@ export function UploadSyllabusModal() {
       if (response.error) {
         setError({
           ...error,
-          syllabusFile: true,
+          syllabusFile: true
         });
       } else if (response.result) {
         const newRows = [...rows];
@@ -108,25 +122,12 @@ export function UploadSyllabusModal() {
       <DialogContent sx={{ paddingBottom: 0 }}>
         <DialogContentText>
           Please verify the subject code, course number, and CRN of the selected course to upload a syllabus. Syllabus
-          files must be in PDF format and cannot be more than 5 MB in size.
+          files must be in PDF format and cannot be more than 2 MB in size.
         </DialogContentText>
         {loading ? <LoadingSpinner /> : null}
         <form onSubmit={handleSubmit}>
           <Grid container spacing={{ xs: 1 }} justifyContent="center">
             <Grid size={{ xs: 12, sm: 4 }}>
-              {/* <TextField
-                required
-                margin="dense"
-                id="subjectCode"
-                name="subjectCode"
-                label="Subject Code"
-                type="text"
-                fullWidth
-                variant="outlined"
-                disabled={loading}
-                error={error.subjectCode}
-                helperText={error.subjectCode ? "Does not match selected course." : "e.g., ENGL"}
-              /> */}
               <FormControl fullWidth margin="dense" variant="outlined">
                 <InputLabel component="div" sx={{ backgroundColor: "#fff" }}>
                   Subject Code
@@ -205,7 +206,7 @@ export function UploadSyllabusModal() {
             variant="outlined"
             disabled={loading}
             error={error.syllabusFile}
-            helperText={error.syllabusFile ? "Unable to upload selected file." : undefined}
+            helperText={error.syllabusFile ? (error.syllabusFileMessage ?? "Unable to upload selected file.") : undefined}
           />
           <DialogActions>
             <Button onClick={handleClose} disabled={loading}>

@@ -8,6 +8,8 @@ import Stack, { type StackProps } from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, type SxProps } from "@mui/material/styles";
+import HelpIcon from "@mui/icons-material/HelpOutlineOutlined";
+import IconButton from "@mui/material/IconButton";
 
 import createPageTheme from "app/components/PageLayout/createPageTheme";
 
@@ -55,6 +57,16 @@ function PageHeader() {
       <Toolbar>
         <PageHeaderLogo />
         <PageHeaderTitle />
+        <IconButton
+          id="help-button"
+          disableRipple={true}
+          sx={{ textAlign: "right", textTransform: "none" }}
+          href="https://mygsu.sharepoint.com/:b:/t/SyllabiPublicAccessInitiative/IQDjz1UAXML1SYVgb7LOgz0YAYPijaKnLzEqfM1pwL19eKM"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <HelpIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

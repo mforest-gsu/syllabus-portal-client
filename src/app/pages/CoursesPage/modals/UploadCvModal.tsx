@@ -11,7 +11,13 @@ import * as api from "app/api";
 import { useAppDispatch, useAppSelector, coursesPageStore } from "app/store";
 import LoadingSpinner from "app/components/LoadingSpinner";
 
-const defaultError = { instructorEmail: false, cvFile: false };
+type ModalError = {
+  instructorEmail: boolean;
+  cvFile: boolean;
+  cvFileMessage?: string | undefined;
+};
+
+const defaultError = { instructorEmail: false, cvFile: false } as ModalError;
 
 export function UploadCvModal() {
   const dispatch = useAppDispatch();
@@ -55,12 +61,12 @@ export function UploadCvModal() {
       cvFile: File;
     };
     const error = {
-      instructorEmail:
-        formData.instructorEmail.toUpperCase() !== selectedRow.instructorEmail?.toUpperCase(),
-      cvFile: false,
-    };
+      instructorEmail: formData.instructorEmail.toUpperCase() !== selectedRow.instructorEmail?.toUpperCase(),
+      cvFile: formData.cvFile.size < 1024 || formData.cvFile.size > 2097152,
+    } as ModalError;
 
-    if (error.instructorEmail) {
+    if (error.instructorEmail || error.cvFile) {
+      error.cvFileMessage = error.cvFile ? "File must be less than 2MB in size" : undefined;
       setError(error);
     } else {
       const response = await api.uploadCv({
@@ -85,10 +91,10 @@ export function UploadCvModal() {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Upload Syllabus File</DialogTitle>
+      <DialogTitle>Upload CV File</DialogTitle>
       <DialogContent sx={{ paddingBottom: 0 }}>
         <DialogContentText>
-          Please verify the instructor email to upload a CV. CV files must be in PDF format and cannot be more than 5 MB
+          Please verify the instructor email to upload a CV. CV files must be in PDF format and cannot be more than 2 MB
           in size.
         </DialogContentText>
         {loading ? <LoadingSpinner /> : null}
@@ -121,7 +127,7 @@ export function UploadCvModal() {
             variant="outlined"
             disabled={loading}
             error={error.cvFile}
-            helperText={error.cvFile ? "Unable to upload selected file." : undefined}
+            helperText={error.cvFile ? (error.cvFileMessage ?? "Unable to upload selected file.") : undefined}
           />
           <DialogActions>
             <Button onClick={handleClose} disabled={loading}>
